@@ -52,6 +52,7 @@
               <goal>package</goal>
             </goals>
             <configuration>
+              <format>dir</format>
               <mode>thin</mode>
             </configuration>
           </execution>
@@ -59,5 +60,53 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.26.0</version>
+            <executions>
+              <execution>
+                <id>dmp</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <images>
+                <image>
+                  <name>myapp/app-fabric8</name>
+                  <build>
+                    <from>fabric8/java-alpine-openjdk8-jre</from>
+                    <assembly>
+                      <descriptorRef>artifact-with-dependencies</descriptorRef>
+                    </assembly>
+                    <env>
+                      <JAVA_APP_DIR>/maven</JAVA_APP_DIR>
+                      <JAVA_MAIN_CLASS>io.thorntail.Thorntail</JAVA_MAIN_CLASS>
+                    </env>
+                  </build>
+                </image>
+              </images>
+              <resources>
+                <labels>
+                  <service>
+                    <expose>true</expose>
+                  </service>
+                </labels>
+              </resources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

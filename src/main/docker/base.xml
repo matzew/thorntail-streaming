@@ -1,0 +1,12 @@
+<assembly>
+    <fileSets>
+        <fileSet>
+            <directory>target/${project.artifactId}-${project.version}-bin</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>
+
